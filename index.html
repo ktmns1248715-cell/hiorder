@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ko">
 <head>
@@ -294,7 +293,7 @@
     const allRows = rows(section);
     let list = checkedRows(section);
 
-    // 사용자가 단말 수량을 바꿨는데 체크가 0개이면 첫 항목 자동 체크
+    // 단말 수량만 바꿨고 체크 0개면 첫 항목 자동 체크
     if(autoCheck && total>0 && list.length===0 && allRows.length>0){
       const firstCb = allRows[0].querySelector('.mount-check');
       if(firstCb){ firstCb.checked = true; }
@@ -307,17 +306,15 @@
       return;
     }
 
-    // 체크가 1개면 전량
+    // 체크 1개 = 전량
     if(list.length===1){
-      // 다른 행은 0으로 리셋
       allRows.forEach(r=>{ if(!r.querySelector('.mount-check').checked) r.querySelector('.mount-qty').value=0; });
       list[0].querySelector('.mount-qty').value=total;
       return;
     }
 
-    // 2개 이상: 균등 배분 + 나머지 1씩
+    // 2개 이상 = 균등 + 나머지 1씩
     const base=Math.floor(total/list.length); let rem=total-base*list.length;
-    // 우선 체크되지 않은 애들은 0
     allRows.forEach(r=>{ if(!r.querySelector('.mount-check').checked) r.querySelector('.mount-qty').value=0; });
     list.forEach(r=> r.querySelector('.mount-qty').value=base);
     for(let i=0;i<list.length && rem>0;i++,rem--){
@@ -415,6 +412,75 @@
     $('tdGrand').textContent=nkr(Math.max(0, monthly + onetime - discount));
   }
 
+  // === Make Webhook으로 전송 ===
+  const MAKE_WEBHOOK_URL = "https://hook.eu2.make.com/12nbyh6gcmb7z1b1f5viuhwnmnmizlxk";
+
+  function gatherMounts(section){
+    return rows(section).map(r=>{
+      const name = r.querySelector('span')?.textContent?.trim() || '';
+      const checked = r.querySelector('.mount-check')?.checked || false;
+      const qty = Number(r.querySelector('.mount-qty')?.value || 0);
+      return { name, checked, qty };
+    });
+  }
+
+  function buildPayload(){
+    // 현재 합계 최신화를 보장
+    render();
+
+    const payload = {
+      timestamp: new Date().toISOString(),
+      paytype: document.querySelector('input[name="paytype"]:checked')?.value || '후불',
+      customer: {
+        name: $('cust_name').value.trim(),
+        phone: $('cust_phone').value.trim(),
+        email: $('inEmail').value.trim(),
+        note: $('cust_note').value.trim()
+      },
+      qty: {
+        menu: { h1: num('q_h1'), h2: num('q_h2') },
+        sign: { s10_h1: num('q_s10_h1'), s10_h2: num('q_s10_h2'), s15: num('q_s15') }
+      },
+      mounts: {
+        menu: gatherMounts('menu'),
+        sign: gatherMounts('sign')
+      },
+      fees: {
+        monthly: $('tdMonthly').textContent,
+        onetime: $('tdOnetime').textContent,
+        discount: $('tdDiscount').textContent,
+        grand: $('tdGrand').textContent
+      }
+    };
+    return payload;
+  }
+
+  async function sendToMake(){
+    if(!$('agree_all').checked){ alert('이용약관에 동의해 주세요.'); return; }
+    if(!$('cust_name').value.trim()){ alert('이름을 입력해 주세요.'); return; }
+    if(!$('cust_phone').value.trim()){ alert('전화번호를 입력해 주세요.'); return; }
+    if(!$('inEmail').value.trim()){ alert('이메일을 입력해 주세요.'); return; }
+
+    const btn = $('btnEmail');
+    const old = btn.innerHTML;
+    btn.disabled = true; btn.innerHTML = '전송 중...';
+
+    try{
+      const res = await fetch(MAKE_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(buildPayload())
+      });
+      if(!res.ok) throw new Error('Webhook 응답 오류: '+res.status);
+      alert('신청이 접수되었습니다. 담당자가 곧 연락드립니다.');
+    }catch(err){
+      console.error(err);
+      alert('전송 실패. 잠시 후 다시 시도해 주세요.');
+    }finally{
+      btn.disabled = false; btn.innerHTML = old;
+    }
+  }
+
   // ====== 이벤트 바인딩 ======
   function wire(){
     // 수량 입력 시: 자동체크+분배(autoCheck=true) → 렌더
@@ -451,6 +517,17 @@
         r.querySelector('.mount-qty').value=0;
       }));
       render();
+    });
+
+    // Webhook 전송 버튼
+    $('btnEmail').addEventListener('click', sendToMake);
+
+    // Enter로도 전송(신청자 입력 칸에서)
+    ['cust_name','cust_phone','inEmail','cust_note'].forEach(id=>{
+      const el=$(id); if(!el) return;
+      el.addEventListener('keydown', e=>{
+        if(e.key==='Enter' && (id!=='cust_note')){ e.preventDefault(); sendToMake(); }
+      });
     });
 
     // 최초 렌더
