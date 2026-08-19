@@ -1,19 +1,20 @@
-<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KT M&S 기업무선 PTX 골프장 도입 견적서</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   * { box-sizing: border-box; }
   body {
-    font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    font-family: 'Pretendard', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
     color: #333333;
-    line-height: 1.6;
+    line-height: 1.5;
     margin: 0;
-    padding: 24px 0 60px 0;
+    padding: 24px 10px 60px 10px;
     background: #e9edf2;
+    -webkit-text-size-adjust: 100%;
   }
 
   /* A4 캔버스 (210mm x 297mm) */
@@ -29,53 +30,60 @@
   .quotation-header {
     text-align: center;
     border-bottom: 3px double #0054a6;
-    padding-bottom: 16px;
-    margin-bottom: 22px;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
   }
   .quotation-header h1 {
     color: #0054a6;
-    font-size: 22pt;
-    margin: 0 0 8px 0;
-    letter-spacing: -1px;
+    font-size: 21pt;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
   }
-  .quotation-header p { margin: 0; color: #666666; font-size: 10.5pt; }
+  .quotation-header p { margin: 0; color: #555555; font-size: 10pt; font-weight: 500; }
 
-  .info-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
-  .info-table td { border: 1px solid #cccccc; padding: 7px 8px; font-size: 9.5pt; vertical-align: middle; }
-  .info-table td.label { background-color: #f4f7fa; font-weight: bold; width: 15%; text-align: center; }
-  .info-table td.manager-cell strong { display: block; margin-bottom: 3px; }
+  .info-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  .info-table td { border: 1px solid #cccccc; padding: 7px 8px; font-size: 9.3pt; vertical-align: middle; }
+  .info-table td.label { background-color: #f4f7fa; font-weight: 700; width: 15%; text-align: center; color: #222; }
+  .info-table td.manager-cell strong { display: block; margin-bottom: 2px; }
 
   .main-title {
-    font-size: 12.5pt;
+    font-size: 11.5pt;
     color: #0054a6;
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 18px;
     margin-bottom: 8px;
     border-left: 4px solid #0054a6;
     padding-left: 8px;
+    display: flex;
+    align-items: center;
   }
 
-  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; table-layout: fixed; }
-  .data-table th, .data-table td { border: 1px solid #dddddd; padding: 8px 4px; text-align: center; font-size: 8.9pt; white-space: nowrap; overflow: visible; }
-  .data-table th { background-color: #e6f0fa; color: #111111; font-weight: bold; white-space: normal; font-size: 9pt; }
+  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; table-layout: fixed; }
+  .data-table th, .data-table td { 
+    border: 1px solid #dddddd; 
+    padding: 7px 5px; 
+    text-align: center; 
+    font-size: 8.8pt; 
+    white-space: normal; 
+    overflow: visible; 
+  }
+  .data-table th { background-color: #e6f0fa; color: #111111; font-weight: 700; font-size: 8.9pt; }
+  
   .text-right { text-align: right !important; }
   .highlight-text { color: #d9534f; font-weight: bold; }
   .total-row { background-color: #f0f7ff; font-weight: bold; }
-  .total-row td { white-space: normal; }
+  
   .data-table td.item-cell {
-    white-space: normal;
     text-align: center;
-    padding: 6px 8px;
+    padding: 6px;
     line-height: 1.35;
   }
   .item-edit {
     width: 100%;
-    min-height: 2.4em;
+    min-height: 2.2em;
     display: flex;
     align-items: center;
     justify-content: center;
-    white-space: normal;
-    overflow-wrap: break-word;
     word-break: keep-all;
     text-align: center;
     outline: none;
@@ -83,28 +91,51 @@
   }
   .item-edit:focus { background: #fffbe0; }
 
+  /* 할인 및 프로모션 서브 텍스트 태그 */
+  .sub-discount {
+    display: block;
+    font-size: 7.6pt;
+    color: #d9534f;
+    font-weight: 600;
+    margin-top: 2px;
+    line-height: 1.15;
+  }
+
+  .badge-rate {
+    display: inline-block;
+    background-color: #fff0f0;
+    border: 1px solid #ffcccc;
+    color: #d9534f;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 7.4pt;
+    font-weight: bold;
+    margin-left: 2px;
+  }
+
   .legal-notice {
     background-color: #fff9e6;
     border: 1px solid #ffe0b2;
     border-radius: 4px;
-    padding: 12px;
-    font-size: 9.3pt;
-    margin-top: 16px;
-    margin-bottom: 18px;
+    padding: 10px 12px;
+    font-size: 8.8pt;
+    margin-top: 14px;
+    margin-bottom: 16px;
+    line-height: 1.45;
   }
 
-  ul.effects { padding-left: 20px; font-size: 9.5pt; margin-bottom: 20px; }
+  ul.effects { padding-left: 18px; font-size: 9pt; margin-bottom: 16px; }
   ul.effects li { margin-bottom: 4px; }
 
   .footer-sign {
-    margin-top: 34px;
+    margin-top: 28px;
     text-align: center;
-    font-size: 12pt;
+    font-size: 11pt;
     font-weight: bold;
     color: #222222;
   }
 
-  /* 입력 필드 스타일 - 종이 위에서는 텍스트처럼 보이도록 */
+  /* 입력 필드 스타일 */
   .edit {
     width: 100%;
     border: none;
@@ -120,7 +151,7 @@
     outline: none;
     background: #fffbe0;
   }
-  input.qty-input { text-align: center; font-weight: bold; }
+  input.qty-input { text-align: center; font-weight: bold; width: 45px; }
   input.money-input { text-align: right; }
   input.date-input {
     text-align: center;
@@ -128,8 +159,9 @@
     font-weight: bold;
     color: #0054a6;
   }
-  .amount-cell { white-space: nowrap; padding-right: 8px !important; }
+  .amount-cell { white-space: nowrap; padding-right: 6px !important; }
   .amount-cell input { display: inline-block; }
+  
   .discount-inline {
     display: inline-flex;
     align-items: center;
@@ -137,20 +169,20 @@
     width: 100%;
     gap: 2px;
   }
-  .discount-inline input { width: 55px; text-align: right; }
+  .discount-inline input { width: 48px; text-align: right; }
 
-  /* ---------- 컨트롤 패널 (저장되지 않음) ---------- */
+  /* 컨트롤 패널 */
   .control-panel {
     width: 210mm;
     margin: 20px auto 0 auto;
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
   }
-  .control-panel button {
-    padding: 12px 22px;
-    font-size: 11pt;
+  .control-panel button, .control-panel a.btn-call {
+    padding: 11px 18px;
+    font-size: 10.5pt;
     font-weight: bold;
     border: none;
     border-radius: 6px;
@@ -158,8 +190,13 @@
     color: #ffffff;
     transition: opacity 0.15s ease;
     font-family: inherit;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
-  .control-panel button:hover { opacity: 0.85; }
+  .control-panel button:hover, .control-panel a.btn-call:hover { opacity: 0.85; }
+  #btn-call { background-color: #28a745; }
   #btn-jpg { background-color: #0054a6; }
   #btn-pdf { background-color: #d9534f; }
   #btn-reset { background-color: #6c757d; }
@@ -168,14 +205,38 @@
     width: 210mm;
     margin: 10px auto 0 auto;
     text-align: center;
-    font-size: 9.5pt;
-    color: #777;
+    font-size: 9pt;
+    color: #666;
+  }
+
+  /* 모바일 뷰포트 배율 최적화 */
+  @media screen and (max-width: 820px) {
+    body {
+      padding: 10px 4px 40px 4px;
+      background: #f4f6f9;
+    }
+    #quotation {
+      width: 100%;
+      min-height: auto;
+      padding: 16px 12px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+      border-radius: 6px;
+    }
+    .quotation-header h1 { font-size: 17pt; }
+    .quotation-header p { font-size: 9.5pt; }
+    .info-table td { font-size: 8.5pt; padding: 6px 4px; }
+    .main-title { font-size: 10.5pt; margin-top: 14px; }
+    .data-table th, .data-table td { font-size: 8pt; padding: 6px 2px; }
+    .sub-discount { font-size: 7.2pt; }
+    .badge-rate { font-size: 7pt; }
+    .control-panel, .hint { width: 100%; }
+    .control-panel button, .control-panel a.btn-call { width: 100%; margin-bottom: 6px; }
   }
 
   @media print {
     body { background: #fff; padding: 0; }
     .control-panel, .hint { display: none; }
-    #quotation { box-shadow: none; margin: 0; }
+    #quotation { box-shadow: none; margin: 0; width: 210mm; min-height: 297mm; padding: 14mm; }
   }
 </style>
 </head>
@@ -216,33 +277,40 @@
     <div class="main-title">1. 초기 도입 비용 (CAPEX)</div>
     <table class="data-table">
         <colgroup>
-            <col style="width:24%;"><col style="width:18%;"><col style="width:18%;"><col style="width:10%;"><col style="width:30%;">
+            <col style="width:23%;"><col style="width:17%;"><col style="width:24%;"><col style="width:9%;"><col style="width:27%;">
         </colgroup>
         <thead>
             <tr>
                 <th>품명 및 규격</th>
                 <th>정상 가격</th>
-                <th>프로모션 단가</th>
+                <th>프로모션 단가 (할인율)</th>
                 <th>수량</th>
-                <th>공급 가액</th>
+                <th>최종 공급 가액</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td class="item-cell"><div class="item-edit" id="deviceSpec" contenteditable="true">모토로라 RG170 <br>(IP69 방수, <br>1.5W 고출력스피커)</div></td>
+                <td class="item-cell"><div class="item-edit" id="deviceSpec" contenteditable="true">모토로라 RG170 <br>(IP69 방수, 1.5W 고출력)</div></td>
                 <td class="text-right amount-cell">
-                    <input class="edit money-input" type="text" inputmode="numeric" id="normalPrice" value="297,000">원
+                    <input class="edit money-input" type="text" inputmode="numeric" id="normalPrice" value="297,000" style="width: 55px;">원
                 </td>
                 <td class="text-right amount-cell highlight-text">
-                    <input class="edit money-input highlight-text" type="text" inputmode="numeric" id="promoPrice" value="0">원
+                    <div>
+                        <input class="edit money-input highlight-text" type="text" inputmode="numeric" id="promoPrice" value="0" style="width: 40px;">원
+                        <span class="badge-rate" id="promoDiscountRate">100%↓</span>
+                    </div>
+                    <span class="sub-discount" id="promoDiffLabel">할인: -297,000원</span>
                 </td>
                 <td>
                     <input class="edit qty-input" type="number" id="qty" min="1" value="60">
                 </td>
-                <td class="text-right amount-cell" style="font-weight: bold;"><span id="supplyAmount">0</span>원</td>
+                <td class="text-right amount-cell" style="font-weight: bold;">
+                    <div><span id="supplyAmount">0</span>원</div>
+                    <span class="sub-discount" id="totalDiscountLabel">총 할인: -17,820,000원</span>
+                </td>
             </tr>
             <tr class="total-row">
-                <td colspan="4">초기 투자비용 합계 (단말기 대금 할인 혜택)</td>
+                <td colspan="4">초기 투자비용 합계 (단말기 대금 전액 지원 혜택)</td>
                 <td class="text-right highlight-text">총 <span id="capexSaving">0</span>원 절감</td>
             </tr>
         </tbody>
@@ -251,41 +319,44 @@
     <div class="main-title">2. 월 운영 비용 (OPEX - 3년 약정 기준)</div>
     <table class="data-table">
         <colgroup>
-            <col style="width:24%;"><col style="width:16%;"><col style="width:16%;"><col style="width:22%;"><col style="width:22%;">
+            <col style="width:24%;"><col style="width:16%;"><col style="width:18%;"><col style="width:21%;"><col style="width:21%;">
         </colgroup>
         <thead>
             <tr>
                 <th>요금 항목 구성</th>
                 <th>정상 월정액</th>
                 <th>선택약정 할인액</th>
-                <th>대당 월 청구액(VAT 포함)</th>
+                <th>대당 월 청구액(VAT포함)</th>
                 <th>전체 기준 총 월정액</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td class="item-cell"><div class="item-edit" id="planName" contenteditable="true">기업전용 라이트(9,900원)+PTX 부가서비스(5,500원)</div></td>
+                <td class="item-cell"><div class="item-edit" id="planName" contenteditable="true">기업전용 라이트(9,900원)<br>+ PTX 부가서비스(5,500원)</div></td>
                 <td class="text-right amount-cell">
-                    <input class="edit money-input" type="text" inputmode="numeric" id="normalMonthly" value="15,400">원
+                    <input class="edit money-input" type="text" inputmode="numeric" id="normalMonthly" value="15,400" style="width: 48px;">원
                 </td>
                 <td class="amount-cell">
-                    <span class="discount-inline">-<input class="edit money-input" type="text" inputmode="numeric" id="discountMonthly" value="2,475">원</span>
+                    <div class="discount-inline">
+                        -<input class="edit money-input" type="text" inputmode="numeric" id="discountMonthly" value="2,475">원
+                    </div>
+                    <span class="sub-discount text-right" id="planDiscountRate">(약 16.1% 할인)</span>
                 </td>
                 <td class="text-right amount-cell highlight-text"><span id="perUnitMonthly">0</span>원</td>
                 <td class="text-right amount-cell" style="font-weight: bold;"><span id="totalMonthly">0</span>원</td>
             </tr>
             <tr class="total-row">
-                <td colspan="3">연간 총 운영 비용 (타사 PTT 서비스 대비 20% 절감 적용)</td>
-                <td colspan="2" class="text-right" style="color: #0054a6;"><span id="annualTotal">0</span>원 / 년</td>
+                <td colspan="3">연간 총 운영 비용 (타사 PTT 대비 운영비 절감 적용)</td>
+                <td colspan="2" class="text-right" style="color: #0054a6; font-size: 9.3pt;"><span id="annualTotal">0</span>원 / 년</td>
             </tr>
         </tbody>
     </table>
 
     <div class="main-title">3. 도입 시 독점적 기대 효과</div>
     <ul class="effects">
-        <li><strong>음영지역 ZERO 통신망:</strong> KT LTE 전국망 백본망을 사용하여 산악 지형 및 그늘집, 지하에서도 통신 단절 없음.</li>
-        <li><strong>골프장 특화 하드웨어:</strong> 카트 주행 소음을 상쇄하는 1.5W 스피커 탑재 및 세차 환경을 견디는 강력한 IP69 방수방진.</li>
-        <li><strong>완벽한 보안 및 안전:</strong> AES-256 비화 암호화 기술로 내부 유출 방지 및 경기원 보호용 SOS 긴급 알람 작동.</li>
+        <li><strong>음영지역 ZERO 통신망:</strong> KT LTE 전국 백본망을 사용하여 산악 지형, 그늘집, 지하에서도 통신 단절 없음.</li>
+        <li><strong>골프장 특화 하드웨어:</strong> 카트 주행 소음을 상쇄하는 1.5W 스피커 탑재 및 고압 세차 환경을 견디는 IP69 방수방진.</li>
+        <li><strong>완벽한 보안 및 안전:</strong> AES-256 비화 암호화 기술로 내부 유출 방지 및 경기원 보호용 SOS 긴급 알람 기본 제공.</li>
     </ul>
 
     <div class="footer-sign">
@@ -295,11 +366,12 @@
 </div>
 
 <div class="control-panel">
+    <a href="tel:010-8290-9971" id="btn-call" class="btn-call">📞 담당자 전화 연결 (김영훈 과장)</a>
     <button id="btn-jpg">📷 JPG로 저장</button>
     <button id="btn-pdf">📄 PDF로 저장</button>
     <button id="btn-reset">🔄 수량/조건 초기화</button>
 </div>
-<div class="hint">수량, 단가, 요금 항목을 직접 클릭해서 수정하면 아래 금액이 자동으로 재계산됩니다. 견적 일자는 클릭하면 달력에서 선택할 수 있습니다.</div>
+<div class="hint">단가, 요금, 수량을 직접 입력 및 변경하면 할인액/할인율과 최종 공급가액이 실시간으로 재계산됩니다.</div>
 
 <script>
   const fmt = (n) => Math.round(n).toLocaleString('ko-KR');
@@ -317,20 +389,24 @@
     perUnitMonthly: document.getElementById('perUnitMonthly'),
     totalMonthly: document.getElementById('totalMonthly'),
     annualTotal: document.getElementById('annualTotal'),
+    promoDiscountRate: document.getElementById('promoDiscountRate'),
+    promoDiffLabel: document.getElementById('promoDiffLabel'),
+    totalDiscountLabel: document.getElementById('totalDiscountLabel'),
+    planDiscountRate: document.getElementById('planDiscountRate')
   };
 
   const moneyInputs = document.querySelectorAll('.money-input');
 
   const defaults = {
-    supplyName: '골프장 경기 운영 혁신을 위한<br>VoLTE 무전기 도입', // 초기화 시 두 줄 유지되도록 수정
+    supplyName: '골프장 경기 운영 혁신을 위한<br>VoLTE 무전기 도입',
     quoteDate: '2026-07-01',
     managerInfo: '김영훈 과장 010-8290-9971',
     deviceName: '모토로라 솔루션 RG170 (WAVE PTX)',
-    deviceSpec: '모토로라 RG170 (IP69 방수, 1.5W 고출력 스피커)',
+    deviceSpec: '모토로라 RG170 <br>(IP69 방수, 1.5W 고출력)',
     normalPrice: '297,000',
     promoPrice: '0',
     qty: 60,
-    planName: '기업전용 라이트(9,900원)+PTX 부가서비스(5,500원)',
+    planName: '기업전용 라이트(9,900원)<br>+ PTX 부가서비스(5,500원)',
     normalMonthly: '15,400',
     discountMonthly: '2,475',
   };
@@ -342,17 +418,39 @@
     const normalMonthly = parseFloat(toRaw(els.normalMonthly.value)) || 0;
     const discountMonthly = parseFloat(toRaw(els.discountMonthly.value)) || 0;
 
+    // CAPEX 계산
+    const unitDiscount = Math.max(normalPrice - promoPrice, 0);
     const supplyAmount = promoPrice * qty;
-    const capexSaving = (normalPrice - promoPrice) * qty;
+    const capexSaving = unitDiscount * qty;
+    
+    // 할인율 계산
+    let rate = 0;
+    if (normalPrice > 0) {
+      rate = Math.round((unitDiscount / normalPrice) * 100);
+    }
+    
+    // 요금제 할인율 계산
+    let planRate = 0;
+    if (normalMonthly > 0) {
+      planRate = ((discountMonthly / normalMonthly) * 100).toFixed(1);
+    }
+
     const perUnitMonthly = Math.max(normalMonthly - discountMonthly, 0);
     const totalMonthly = perUnitMonthly * qty;
     const annualTotal = totalMonthly * 12;
 
+    // 텍스트 반영
     els.supplyAmount.textContent = fmt(supplyAmount);
     els.capexSaving.textContent = fmt(capexSaving);
     els.perUnitMonthly.textContent = fmt(perUnitMonthly);
     els.totalMonthly.textContent = fmt(totalMonthly);
     els.annualTotal.textContent = fmt(annualTotal);
+
+    // 할인 태그 및 문구 반영
+    els.promoDiscountRate.textContent = `${rate}%↓`;
+    els.promoDiffLabel.textContent = `할인: -${fmt(unitDiscount)}원`;
+    els.totalDiscountLabel.textContent = `총 할인: -${fmt(capexSaving)}원`;
+    els.planDiscountRate.textContent = `(약 ${planRate}% 할인)`;
   }
 
   moneyInputs.forEach(inp => {
@@ -373,15 +471,15 @@
   }
 
   function resetAll() {
-    document.getElementById('supplyName').innerHTML = defaults.supplyName; // div 구동을 위해 .value에서 .innerHTML로 변경
+    document.getElementById('supplyName').innerHTML = defaults.supplyName;
     document.getElementById('quoteDate').value = defaults.quoteDate;
     document.getElementById('managerInfo').value = defaults.managerInfo;
     document.getElementById('deviceName').value = defaults.deviceName;
-    document.getElementById('deviceSpec').textContent = defaults.deviceSpec;
+    document.getElementById('deviceSpec').innerHTML = defaults.deviceSpec;
     els.normalPrice.value = defaults.normalPrice;
     els.promoPrice.value = defaults.promoPrice;
     els.qty.value = defaults.qty;
-    document.getElementById('planName').textContent = defaults.planName;
+    document.getElementById('planName').innerHTML = defaults.planName;
     els.normalMonthly.value = defaults.normalMonthly;
     els.discountMonthly.value = defaults.discountMonthly;
     recalc();
@@ -405,7 +503,7 @@
           const computed = window.getComputedStyle(input);
           span.style.cssText = computed.cssText;
           span.style.display = 'inline-block';
-          span.style.width = input.classList.contains('money-input') && input.id === 'discountMonthly' ? 'auto' : '100%';
+          span.style.width = 'auto';
           input.parentNode.replaceChild(span, input);
         });
       }
