@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KT M&S 기업무선 PTX 골프장 도입 견적서</title>
+<title>KT 기업무선 PTX 골프장 도입 견적서</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -38,7 +38,7 @@
     min-height: 297mm;
     margin: 0 auto;
     background: #ffffff;
-    padding: 14mm 14mm;
+    padding: 13mm 13mm;
     box-shadow: 0 4px 18px rgba(0,0,0,0.15);
     overflow: hidden;
   }
@@ -65,23 +65,23 @@
   .quotation-header {
     text-align: center;
     border-bottom: 3px double #0054a6;
-    padding-bottom: 14px;
-    margin-bottom: 18px;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
   }
   .quotation-header h1 {
     color: #0054a6;
-    font-size: 21pt;
-    margin: 0 0 6px 0;
+    font-size: 20pt;
+    margin: 0 0 4px 0;
     letter-spacing: -0.5px;
     text-align: center;
   }
-  .quotation-header p { margin: 0; color: #555555; font-size: 10pt; font-weight: 500; text-align: center; }
+  .quotation-header p { margin: 0; color: #555555; font-size: 9.5pt; font-weight: 500; text-align: center; }
 
-  .info-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  .info-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
   .info-table td { 
     border: 1px solid #cccccc; 
-    padding: 7px 8px; 
-    font-size: 9.3pt; 
+    padding: 6px 8px; 
+    font-size: 9pt; 
     vertical-align: middle; 
     text-align: center; 
   }
@@ -89,36 +89,36 @@
   .info-table td.manager-cell strong { display: block; margin-bottom: 2px; text-align: center; }
 
   .main-title {
-    font-size: 11.5pt;
+    font-size: 10.8pt;
     color: #0054a6;
     font-weight: bold;
-    margin-top: 18px;
-    margin-bottom: 8px;
+    margin-top: 14px;
+    margin-bottom: 6px;
     border-left: 4px solid #0054a6;
     padding-left: 8px;
     display: flex;
     align-items: center;
   }
 
-  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; table-layout: fixed; }
+  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed; }
   .data-table th, .data-table td { 
     border: 1px solid #dddddd; 
-    padding: 7px 5px; 
+    padding: 6px 4px; 
     text-align: center !important; 
     vertical-align: middle;
-    font-size: 8.8pt; 
+    font-size: 8.5pt; 
     white-space: normal; 
     overflow: visible; 
   }
-  .data-table th { background-color: #e6f0fa; color: #111111; font-weight: 700; font-size: 8.9pt; text-align: center; }
+  .data-table th { background-color: #e6f0fa; color: #111111; font-weight: 700; font-size: 8.7pt; text-align: center; }
   
   .highlight-text { color: #d9534f; font-weight: bold; }
   .total-row { background-color: #f0f7ff; font-weight: bold; }
   
   .data-table td.item-cell {
     text-align: center;
-    padding: 6px;
-    line-height: 1.35;
+    padding: 5px;
+    line-height: 1.3;
   }
   .item-edit {
     width: 100%;
@@ -137,7 +137,7 @@
 
   .sub-discount {
     display: block;
-    font-size: 7.6pt;
+    font-size: 7.5pt;
     color: #d9534f;
     font-weight: 600;
     margin-top: 2px;
@@ -152,30 +152,62 @@
     color: #d9534f;
     padding: 1px 4px;
     border-radius: 3px;
-    font-size: 7.4pt;
+    font-size: 7.3pt;
     font-weight: bold;
     margin-left: 2px;
   }
 
   .legal-notice {
-    background-color: #fff9e6;
-    border: 1px solid #ffe0b2;
+    background-color: #fff8f8;
+    border: 1.5px solid #f5c2c7;
     border-radius: 4px;
-    padding: 10px 12px;
-    font-size: 8.8pt;
-    margin-top: 14px;
-    margin-bottom: 16px;
+    padding: 8px 12px;
+    font-size: 8.5pt;
+    margin-top: 6px;
+    margin-bottom: 12px;
     line-height: 1.45;
     text-align: center;
+    color: #842029;
   }
 
-  ul.effects { padding-left: 18px; font-size: 9pt; margin-bottom: 16px; text-align: left; }
-  ul.effects li { margin-bottom: 4px; }
+  /* 전파법 상세 박스 디자인 */
+  .law-box-container {
+    background-color: #fcfcfc;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+  .law-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .law-item {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 7px 9px;
+    font-size: 8.2pt;
+    line-height: 1.4;
+  }
+  .law-item strong {
+    color: #0054a6;
+    display: inline-block;
+    margin-bottom: 2px;
+  }
+  .law-item.danger strong {
+    color: #d9534f;
+  }
+
+  ul.effects { padding-left: 18px; font-size: 8.5pt; margin-bottom: 10px; margin-top: 4px; text-align: left; }
+  ul.effects li { margin-bottom: 3px; }
 
   .footer-sign {
-    margin-top: 28px;
+    margin-top: 18px;
     text-align: center;
-    font-size: 11pt;
+    font-size: 10.5pt;
     font-weight: bold;
     color: #222222;
   }
@@ -200,12 +232,25 @@
   }
   input.qty-input { text-align: center; font-weight: bold; width: 45px; }
   input.money-input { text-align: center; }
+  
+  /* 견적일자 가운데 정렬 */
   input.date-input {
-    text-align: center;
+    text-align: center !important;
     cursor: pointer;
     font-weight: bold;
     color: #0054a6;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
   }
+  input.date-input::-webkit-date-and-time-value {
+    text-align: center;
+  }
+  input.date-input::-webkit-calendar-picker-indicator {
+    margin-left: 4px;
+  }
+
   .amount-cell { 
     white-space: nowrap; 
     text-align: center !important; 
@@ -224,7 +269,7 @@
   /* 컨트롤 패널 */
   .control-panel {
     width: 210mm;
-    margin: 20px auto 0 auto;
+    margin: 16px auto 0 auto;
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -255,9 +300,9 @@
 
   .hint {
     width: 210mm;
-    margin: 10px auto 0 auto;
+    margin: 8px auto 0 auto;
     text-align: center;
-    font-size: 9pt;
+    font-size: 8.8pt;
     color: #666;
   }
 
@@ -275,12 +320,13 @@
       border-radius: 6px;
     }
     .quotation-header h1 { font-size: 17pt; }
-    .quotation-header p { font-size: 9.5pt; }
-    .info-table td { font-size: 8.5pt; padding: 6px 4px; }
-    .main-title { font-size: 10.5pt; margin-top: 14px; }
-    .data-table th, .data-table td { font-size: 8pt; padding: 6px 2px; }
-    .sub-discount { font-size: 7.2pt; }
-    .badge-rate { font-size: 7pt; }
+    .quotation-header p { font-size: 9pt; }
+    .info-table td { font-size: 8.3pt; padding: 6px 4px; }
+    .main-title { font-size: 10.2pt; margin-top: 12px; }
+    .data-table th, .data-table td { font-size: 7.8pt; padding: 5px 2px; }
+    .law-grid { grid-template-columns: 1fr; }
+    .sub-discount { font-size: 7pt; }
+    .badge-rate { font-size: 6.8pt; }
     .control-panel, .hint { width: 100%; }
     .control-panel button, .control-panel a.btn-call { width: 100%; margin-bottom: 6px; }
   }
@@ -288,7 +334,7 @@
   @media print {
     body { background: #fff; padding: 0; }
     .control-panel, .hint { display: none; }
-    #quotation { box-shadow: none; margin: 0; width: 210mm; min-height: 297mm; padding: 14mm; }
+    #quotation { box-shadow: none; margin: 0; width: 210mm; min-height: 297mm; padding: 13mm; }
   }
 </style>
 </head>
@@ -301,7 +347,7 @@
     <div class="quotation-content">
         <div class="quotation-header">
             <h1>모토로라 RG170 도입견적</h1>
-            <p>KT M&S 기업무선 PTX 스마트 통신망 전환 제안</p>
+            <p>KT 기업무선 PTX 스마트 통신망 전환 제안</p>
         </div>
 
         <table class="info-table">
@@ -311,12 +357,12 @@
                     <div class="edit" id="supplyName" contenteditable="true" style="text-align: center; outline: none; line-height: 1.4;">골프장 경기 운영 혁신을 위한<br>VoLTE 무전기 도입</div>
                 </td>
                 <td class="label">견적 일자</td>
-                <td><input class="edit date-input" type="date" id="quoteDate" value="2026-07-01"></td>
+                <td style="text-align: center;"><input class="edit date-input" type="date" id="quoteDate" value="2026-07-01"></td>
             </tr>
             <tr>
                 <td class="label">제안 주관</td>
                 <td class="manager-cell">
-                    <strong>KT M&S 동부법인지사</strong>
+                    <strong>KT 동부법인지사 대구센터</strong>
                     <input class="edit" id="managerInfo" value="김영훈 과장 010-8290-9971">
                 </td>
                 <td class="label">제안 단말</td>
@@ -325,8 +371,9 @@
         </table>
 
         <div class="legal-notice">
-            <strong>⚠️ 법적 행정 처분 불이행 리스크 안내 (과기부 정책 고지)</strong><br>
-            과학기술정보통신부 정책에 의거하여 현재 귀 사에서 운용 중인 400MHz 아날로그 생활무전기는 <br><strong>2026년 12월 31일부로 대한민국 전역에서 전면 종료(사용 불법화)</strong>됩니다. <br>본 견적은 필수적 무전망 디지털 전환에 따른 자본 지출(CAPEX)을 zero화하기 위한 KT M&S 단독 프로모션 단가입니다.
+            <strong>⚠️ [필독] 과학기술정보통신부 전파법 개정에 따른 아날로그 무전기 전면 사용 금지 안내</strong><br>
+            현재 운용 중인 400MHz 대역 아날로그 생활무전기는 <strong>2026년 12월 31일부로 이용 유예기간이 완전 종료</strong>됩니다.<br>
+            2027년 1월 1일부터 해당 무전기를 지속 사용할 경우 불법 무선국 운용으로 간주되어 법적 행정처분(과태료) 대상이 됩니다.
         </div>
 
         <div class="main-title">1. 초기 도입 비용 (CAPEX)</div>
@@ -407,7 +454,29 @@
             </tbody>
         </table>
 
-        <div class="main-title">3. 도입 시 독점적 기대 효과</div>
+        <div class="main-title">3. 전파법 개정 안내 및 LTE 무전망 전환 필요성</div>
+        <div class="law-box-container">
+            <div class="law-grid">
+                <div class="law-item">
+                    <strong>1) 왜 기존 무전기를 사용할 수 없나요?</strong><br>
+                    과기부의 '주파수 이용 효율화 정책'에 따라 400MHz 대역 아날로그 기술기준 인증이 전면 폐지되었습니다. (제조/수입/판매는 이미 2024년 1월부터 금지됨)
+                </div>
+                <div class="law-item danger">
+                    <strong>2) 2027년 이후 지속 사용 시 불이익은?</strong><br>
+                    전파법 제86조 및 제91조에 의거, 불법 무선설비 운용으로 적발 시 <strong>최대 200만 원 이하의 과태료</strong>가 부과되며 주기적 중앙전파관리소 전파단속 대상이 됩니다.
+                </div>
+                <div class="law-item">
+                    <strong>3) 어떻게 전환·변경해야 하나요?</strong><br>
+                    단순 DMR 디지털 교체 대신, 허가·신고 의무 및 전파사용료가 없고 거리 제한이 없는 <strong>통신사 기반 LTE/VoLTE 무전기(KT PTX)</strong>로 전환하는 것이 가장 안정적입니다.
+                </div>
+                <div class="law-item">
+                    <strong>4) 골프장 경기 운영 관점의 이점은?</strong><br>
+                    기존 생활무전기의 고질적 문제인 산악 지형 통신 끊김, 인접 코스 채널 혼선, 도청 위험을 완전 해결하고 100% 음영 ZERO 환경을 제공합니다.
+                </div>
+            </div>
+        </div>
+
+        <div class="main-title">4. 도입 시 독점적 기대 효과</div>
         <ul class="effects">
             <li><strong>음영지역 ZERO 통신망:</strong> KT LTE 전국 백본망을 사용하여 산악 지형, 그늘집, 지하에서도 통신 단절 없음.</li>
             <li><strong>골프장 특화 하드웨어:</strong> 카트 주행 소음을 상쇄하는 1.5W 스피커 탑재 및 고압 세차 환경을 견디는 IP69 방수방진.</li>
@@ -415,7 +484,7 @@
         </ul>
 
         <div class="footer-sign">
-            KT M&S 동부법인지사 대표이사 (직인생략)
+            KT 동부법인지사 대구센터 (직인생략)
         </div>
     </div>
 
@@ -603,7 +672,7 @@
   document.getElementById('btn-jpg').addEventListener('click', async () => {
     const canvas = await captureCanvas();
     const link = document.createElement('a');
-    link.download = 'KT_MnS_PTX_견적서.jpg';
+    link.download = 'KT_PTX_견적서.jpg';
     link.href = canvas.toDataURL('image/jpeg', 0.95);
     link.click();
   });
@@ -616,7 +685,7 @@
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
     pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('KT_MnS_PTX_견적서.pdf');
+    pdf.save('KT_PTX_견적서.pdf');
   });
 </script>
 
