@@ -1,14 +1,13 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>KT 기업무선 PTX 골프장 도입 견적서</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   * { 
     box-sizing: border-box; 
-    /* 텍스트 선택 및 드래그 방지 */
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -16,22 +15,21 @@
   }
 
   body {
-    font-family: 'Pretendard', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
     color: #333333;
-    line-height: 1.5;
+    line-height: 1.4;
     margin: 0;
-    padding: 24px 10px 60px 10px;
+    padding: 20px 10px 60px 10px;
     background: #e9edf2;
     -webkit-text-size-adjust: 100%;
+    word-break: keep-all;
   }
 
-  /* 화면 캡처 시도(창 비활성화/포커스 아웃) 시 화면 블러 처리 */
   body.blur-protected {
     filter: blur(14px);
     transition: filter 0.1s ease;
   }
 
-  /* A4 캔버스 (210mm x 297mm) */
   #quotation {
     position: relative;
     width: 210mm;
@@ -43,7 +41,6 @@
     overflow: hidden;
   }
 
-  /* 워터마크 배경 오버레이 (SVG 타일 패턴) */
   .watermark-overlay {
     position: absolute;
     top: 0;
@@ -65,8 +62,8 @@
   .quotation-header {
     text-align: center;
     border-bottom: 3px double #0054a6;
-    padding-bottom: 12px;
-    margin-bottom: 14px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
   }
   .quotation-header h1 {
     color: #0054a6;
@@ -77,52 +74,50 @@
   }
   .quotation-header p { margin: 0; color: #555555; font-size: 9.5pt; font-weight: 500; text-align: center; }
 
-  .info-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+  .info-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed; }
   .info-table td { 
     border: 1px solid #cccccc; 
-    padding: 6px 8px; 
-    font-size: 9pt; 
+    padding: 6px 4px; 
+    font-size: 8.8pt; 
     vertical-align: middle; 
     text-align: center; 
   }
-  .info-table td.label { background-color: #f4f7fa; font-weight: 700; width: 15%; text-align: center; color: #222; }
-  .info-table td.manager-cell strong { display: block; margin-bottom: 2px; text-align: center; }
+  .info-table td.label { background-color: #f4f7fa; font-weight: 700; width: 20%; color: #222; }
+  .info-table td.manager-cell strong { display: block; margin-bottom: 2px; }
 
   .main-title {
-    font-size: 10.8pt;
+    font-size: 10.5pt;
     color: #0054a6;
     font-weight: bold;
-    margin-top: 14px;
-    margin-bottom: 6px;
+    margin-top: 12px;
+    margin-bottom: 5px;
     border-left: 4px solid #0054a6;
-    padding-left: 8px;
+    padding-left: 6px;
     display: flex;
     align-items: center;
   }
 
-  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed; }
+  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; table-layout: fixed; }
   .data-table th, .data-table td { 
     border: 1px solid #dddddd; 
-    padding: 6px 4px; 
+    padding: 6px 2px; 
     text-align: center !important; 
     vertical-align: middle;
-    font-size: 8.5pt; 
-    white-space: normal; 
-    overflow: visible; 
+    font-size: 8.4pt; 
+    overflow: hidden;
   }
-  .data-table th { background-color: #e6f0fa; color: #111111; font-weight: 700; font-size: 8.7pt; text-align: center; }
+  .data-table th { background-color: #e6f0fa; color: #111111; font-weight: 700; font-size: 8.5pt; }
   
   .highlight-text { color: #d9534f; font-weight: bold; }
   .total-row { background-color: #f0f7ff; font-weight: bold; }
   
   .data-table td.item-cell {
     text-align: center;
-    padding: 5px;
-    line-height: 1.3;
+    padding: 4px 2px;
+    line-height: 1.25;
   }
   .item-edit {
     width: 100%;
-    min-height: 2.2em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -137,12 +132,13 @@
 
   .sub-discount {
     display: block;
-    font-size: 7.5pt;
+    font-size: 7.3pt;
     color: #d9534f;
     font-weight: 600;
     margin-top: 2px;
-    line-height: 1.15;
+    line-height: 1.1;
     text-align: center;
+    white-space: nowrap;
   }
 
   .badge-rate {
@@ -150,47 +146,47 @@
     background-color: #fff0f0;
     border: 1px solid #ffcccc;
     color: #d9534f;
-    padding: 1px 4px;
+    padding: 0px 3px;
     border-radius: 3px;
-    font-size: 7.3pt;
+    font-size: 7.2pt;
     font-weight: bold;
     margin-left: 2px;
+    white-space: nowrap;
   }
 
   .legal-notice {
     background-color: #fff8f8;
     border: 1.5px solid #f5c2c7;
     border-radius: 4px;
-    padding: 8px 12px;
-    font-size: 8.5pt;
-    margin-top: 6px;
-    margin-bottom: 12px;
-    line-height: 1.45;
+    padding: 8px 10px;
+    font-size: 8.3pt;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    line-height: 1.4;
     text-align: center;
     color: #842029;
   }
 
-  /* 전파법 상세 박스 디자인 */
   .law-box-container {
     background-color: #fcfcfc;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
-    padding: 10px 12px;
-    margin-bottom: 12px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
   }
   .law-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 6px;
+    gap: 6px;
+    margin-top: 4px;
   }
   .law-item {
     background: #ffffff;
     border: 1px solid #e9ecef;
     border-radius: 4px;
-    padding: 7px 9px;
-    font-size: 8.2pt;
-    line-height: 1.4;
+    padding: 6px 8px;
+    font-size: 8pt;
+    line-height: 1.35;
   }
   .law-item strong {
     color: #0054a6;
@@ -201,18 +197,17 @@
     color: #d9534f;
   }
 
-  ul.effects { padding-left: 18px; font-size: 8.5pt; margin-bottom: 10px; margin-top: 4px; text-align: left; }
+  ul.effects { padding-left: 16px; font-size: 8.3pt; margin-bottom: 8px; margin-top: 4px; text-align: left; }
   ul.effects li { margin-bottom: 3px; }
 
   .footer-sign {
-    margin-top: 18px;
+    margin-top: 14px;
     text-align: center;
-    font-size: 10.5pt;
+    font-size: 10pt;
     font-weight: bold;
     color: #222222;
   }
 
-  /* 입력 필드 스타일 */
   .edit {
     width: 100%;
     border: none;
@@ -230,10 +225,9 @@
     outline: none;
     background: #fffbe0;
   }
-  input.qty-input { text-align: center; font-weight: bold; width: 45px; }
+  input.qty-input { text-align: center; font-weight: bold; width: 32px; }
   input.money-input { text-align: center; }
   
-  /* 견적일자 가운데 정렬 */
   input.date-input {
     text-align: center !important;
     cursor: pointer;
@@ -243,12 +237,13 @@
     justify-content: center;
     align-items: center;
     margin: 0 auto;
+    width: 100%;
   }
   input.date-input::-webkit-date-and-time-value {
     text-align: center;
   }
   input.date-input::-webkit-calendar-picker-indicator {
-    margin-left: 4px;
+    margin-left: 2px;
   }
 
   .amount-cell { 
@@ -262,24 +257,24 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    gap: 2px;
+    gap: 1px;
+    white-space: nowrap;
   }
-  .discount-inline input { width: 50px; text-align: center; }
+  .discount-inline input { width: 44px; text-align: center; }
 
-  /* 컨트롤 패널 */
   .control-panel {
     width: 210mm;
     margin: 16px auto 0 auto;
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
     position: relative;
     z-index: 10;
   }
   .control-panel button, .control-panel a.btn-call {
-    padding: 11px 18px;
-    font-size: 10.5pt;
+    padding: 10px 14px;
+    font-size: 9.8pt;
     font-weight: bold;
     border: none;
     border-radius: 6px;
@@ -303,11 +298,10 @@
     width: 210mm;
     margin: 8px auto 0 auto;
     text-align: center;
-    font-size: 8.8pt;
+    font-size: 8.5pt;
     color: #666;
   }
 
-  /* 스펙 모달 팝업 */
   .modal-overlay {
     display: none;
     position: fixed;
@@ -319,7 +313,7 @@
     z-index: 9999;
     justify-content: center;
     align-items: center;
-    padding: 16px;
+    padding: 12px;
   }
   .modal-overlay.active {
     display: flex;
@@ -339,24 +333,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 20px;
+    padding: 12px 16px;
     background: #0054a6;
     color: #ffffff;
     font-weight: bold;
-    font-size: 11pt;
+    font-size: 10.5pt;
     flex-shrink: 0;
   }
   .modal-close-btn {
     background: transparent;
     border: none;
     color: #ffffff;
-    font-size: 24px;
+    font-size: 22px;
     cursor: pointer;
     font-weight: bold;
     line-height: 1;
   }
   .modal-body {
-    padding: 14px;
+    padding: 10px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     text-align: center;
@@ -373,30 +367,58 @@
     box-shadow: 0 3px 12px rgba(0,0,0,0.12);
   }
 
+  /* ================== 모바일 뷰 최적화 (반응형) ================== */
   @media screen and (max-width: 820px) {
     body {
-      padding: 10px 4px 40px 4px;
-      background: #f4f6f9;
+      padding: 6px 4px 30px 4px;
+      background: #f0f3f7;
     }
     #quotation {
       width: 100%;
       min-height: auto;
-      padding: 16px 12px;
+      padding: 12px 6px;
       box-shadow: 0 1px 6px rgba(0,0,0,0.08);
       border-radius: 6px;
     }
-    .quotation-header h1 { font-size: 17pt; }
-    .quotation-header p { font-size: 9pt; }
-    .info-table td { font-size: 8.3pt; padding: 6px 4px; }
-    .main-title { font-size: 10.2pt; margin-top: 12px; }
-    .data-table th, .data-table td { font-size: 7.8pt; padding: 5px 2px; }
-    .law-grid { grid-template-columns: 1fr; }
-    .sub-discount { font-size: 7pt; }
-    .badge-rate { font-size: 6.8pt; }
+    .quotation-header h1 { font-size: 15pt; }
+    .quotation-header p { font-size: 8.5pt; }
+    
+    .info-table td { font-size: 7.8pt; padding: 5px 2px; }
+    .info-table td.label { width: 22%; }
+    
+    .main-title { font-size: 9.5pt; margin-top: 10px; margin-bottom: 4px; }
+    .legal-notice { font-size: 7.8pt; padding: 6px; line-height: 1.35; }
+    
+    /* 모바일 테이블 폰트 및 패딩 압축 */
+    .data-table th { font-size: 7.4pt; padding: 5px 1px; }
+    .data-table td { font-size: 7.2pt; padding: 5px 1px; }
+    
+    .item-edit { font-size: 7.2pt; }
+    .sub-discount { font-size: 6.5pt; }
+    .badge-rate { font-size: 6.3pt; padding: 0 1px; }
+    
+    input.money-input { font-size: 7.2pt; }
+    input.qty-input { width: 26px; font-size: 7.2pt; }
+    .discount-inline input { width: 36px; }
+    
+    .law-box-container { padding: 6px; }
+    .law-grid { grid-template-columns: 1fr; gap: 5px; }
+    .law-item { font-size: 7.4pt; padding: 5px 6px; }
+    
+    ul.effects { font-size: 7.6pt; padding-left: 14px; }
+    .footer-sign { font-size: 9pt; margin-top: 12px; }
+
     .control-panel, .hint { width: 100%; }
-    .control-panel button, .control-panel a.btn-call { width: 100%; margin-bottom: 6px; }
-    .modal-window { height: 95vh; padding: 0; }
-    .modal-body { padding: 8px; }
+    .control-panel { gap: 6px; }
+    .control-panel button, .control-panel a.btn-call { 
+      width: 100%; 
+      padding: 10px; 
+      font-size: 9.5pt; 
+      margin-bottom: 2px; 
+    }
+    
+    .modal-window { height: 92vh; }
+    .modal-body { padding: 4px; }
   }
 
   @media print {
@@ -421,7 +443,7 @@
             <tr>
                 <td class="label">공급 명칭</td>
                 <td>
-                    <div class="edit" id="supplyName" contenteditable="true" style="text-align: center; outline: none; line-height: 1.4;">골프장 경기 운영 혁신을 위한<br>VoLTE 무전기 도입</div>
+                    <div class="edit" id="supplyName" contenteditable="true" style="text-align: center; outline: none; line-height: 1.3;">골프장 경기 운영 혁신을 위한<br>VoLTE 무전기 도입</div>
                 </td>
                 <td class="label">견적 일자</td>
                 <td style="text-align: center;"><input class="edit date-input" type="date" id="quoteDate" value="2026-07-01"></td>
@@ -438,15 +460,15 @@
         </table>
 
         <div class="legal-notice">
-            <strong>⚠️ [필독] 과학기술정보통신부 전파법 개정에 따른 아날로그 무전기 전면 사용 금지 안내</strong><br>
-            현재 운용 중인 400MHz 대역 아날로그 생활무전기는 <strong>2026년 12월 31일부로 이용 유예기간이 완전 종료</strong>됩니다.<br>
-            2027년 1월 1일부터 해당 무전기를 지속 사용할 경우 불법 무선국 운용으로 간주되어 법적 행정처분(과태료) 대상이 됩니다.
+            <strong>⚠️ [필독] 과기부 전파법 개정에 따른 아날로그 무전기 전면 사용 금지</strong><br>
+            운용 중인 400MHz 대역 아날로그 생활무전기는 <strong>2026년 12월 31일부로 이용 유예기간이 종료</strong>됩니다.<br>
+            2027년 1월 1일부터 지속 사용 시 불법 무선국 운용으로 행정처분(과태료) 대상이 됩니다.
         </div>
 
         <div class="main-title">1. 초기 도입 비용 (CAPEX)</div>
         <table class="data-table">
             <colgroup>
-                <col style="width:23%;"><col style="width:17%;"><col style="width:24%;"><col style="width:9%;"><col style="width:27%;">
+                <col style="width:23%;"><col style="width:16%;"><col style="width:24%;"><col style="width:10%;"><col style="width:27%;">
             </colgroup>
             <thead>
                 <tr>
@@ -459,13 +481,13 @@
             </thead>
             <tbody>
                 <tr>
-                    <td class="item-cell"><div class="item-edit" id="deviceSpec" contenteditable="true">모토로라 RG170 <br>(IP69 방수, 1.5W 고출력)</div></td>
+                    <td class="item-cell"><div class="item-edit" id="deviceSpec" contenteditable="true">모토로라 RG170<br>(IP69, 1.5W)</div></td>
                     <td class="amount-cell">
-                        <input class="edit money-input" type="text" inputmode="numeric" id="normalPrice" value="297,000" style="width: 58px;">원
+                        <input class="edit money-input" type="text" inputmode="numeric" id="normalPrice" value="297,000" style="width: 52px;">원
                     </td>
                     <td class="amount-cell highlight-text">
                         <div style="display: flex; align-items: center; justify-content: center;">
-                            <input class="edit money-input highlight-text" type="text" inputmode="numeric" id="promoPrice" value="0" style="width: 25px;">원
+                            <input class="edit money-input highlight-text" type="text" inputmode="numeric" id="promoPrice" value="0" style="width: 20px;">원
                             <span class="badge-rate" id="promoDiscountRate">100%↓</span>
                         </div>
                         <span class="sub-discount" id="promoDiffLabel">할인: -297,000원</span>
@@ -488,7 +510,7 @@
         <div class="main-title">2. 월 운영 비용 (OPEX - 3년 약정 기준)</div>
         <table class="data-table">
             <colgroup>
-                <col style="width:24%;"><col style="width:16%;"><col style="width:18%;"><col style="width:21%;"><col style="width:21%;">
+                <col style="width:25%;"><col style="width:16%;"><col style="width:18%;"><col style="width:20%;"><col style="width:21%;">
             </colgroup>
             <thead>
                 <tr>
@@ -501,22 +523,22 @@
             </thead>
             <tbody>
                 <tr>
-                    <td class="item-cell"><div class="item-edit" id="planName" contenteditable="true">기업전용 라이트(9,900원)<br>+ PTX 부가서비스(5,500원)</div></td>
+                    <td class="item-cell"><div class="item-edit" id="planName" contenteditable="true">기업전용 라이트(9,900원)<br>+ PTX 부가(5,500원)</div></td>
                     <td class="amount-cell">
-                        <input class="edit money-input" type="text" inputmode="numeric" id="normalMonthly" value="15,400" style="width: 50px;">원
+                        <input class="edit money-input" type="text" inputmode="numeric" id="normalMonthly" value="15,400" style="width: 44px;">원
                     </td>
                     <td class="amount-cell">
                         <div class="discount-inline">
                             -<input class="edit money-input" type="text" inputmode="numeric" id="discountMonthly" value="2,475">원
                         </div>
-                        <span class="sub-discount" id="planDiscountRate">(약 16.1% 할인)</span>
+                        <span class="sub-discount" id="planDiscountRate">(약 16.1%↓)</span>
                     </td>
                     <td class="amount-cell highlight-text"><span id="perUnitMonthly">0</span>원</td>
                     <td class="amount-cell" style="font-weight: bold;"><span id="totalMonthly">0</span>원</td>
                 </tr>
                 <tr class="total-row">
-                    <td colspan="3">연간 총 운영 비용 (타사 PTT 대비 운영비 절감 적용)</td>
-                    <td colspan="2" style="color: #0054a6; font-size: 9.3pt; text-align: center;"><span id="annualTotal">0</span>원 / 년</td>
+                    <td colspan="3">연간 총 운영 비용 (타사 대비 운영비 절감)</td>
+                    <td colspan="2" style="color: #0054a6; font-size: 8.5pt; text-align: center;"><span id="annualTotal">0</span>원 / 년</td>
                 </tr>
             </tbody>
         </table>
@@ -525,29 +547,29 @@
         <div class="law-box-container">
             <div class="law-grid">
                 <div class="law-item">
-                    <strong>1) 왜 기존 무전기를 사용할 수 없나요?</strong><br>
-                    과기부의 '주파수 이용 효율화 정책'에 따라 400MHz 대역 아날로그 기술기준 인증이 전면 폐지되었습니다. (제조/수입/판매는 이미 2024년 1월부터 금지됨)
+                    <strong>1) 기존 무전기 사용 불가 사유</strong><br>
+                    과기부의 '주파수 이용 효율화 정책'에 따라 400MHz 아날로그 인증이 폐지되었습니다.
                 </div>
                 <div class="law-item danger">
-                    <strong>2) 2027년 이후 지속 사용 시 불이익은?</strong><br>
-                    전파법 제86조 및 제91조에 의거, 불법 무선설비 운용으로 적발 시 <strong>최대 200만 원 이하의 과태료</strong>가 부과되며 주기적 중앙전파관리소 전파단속 대상이 됩니다.
+                    <strong>2) 2027년 지속 사용 시 불이익</strong><br>
+                    전파법 제86·91조에 의거 불법 운용 적발 시 <strong>최대 200만 원 이하 과태료</strong>가 부과됩니다.
                 </div>
                 <div class="law-item">
-                    <strong>3) 어떻게 전환·변경해야 하나요?</strong><br>
-                    단순 DMR 디지털 교체 대신, 허가·신고 의무 및 전파사용료가 없고 거리 제한이 없는 <strong>통신사 기반 LTE/VoLTE 무전기(KT PTX)</strong>로 전환하는 것이 가장 안정적입니다.
+                    <strong>3) 권장 전환 방향</strong><br>
+                    허가·신고 및 전파사용료가 없고 거리 제한이 없는 <strong>통신사 기반 LTE/VoLTE 무전기</strong>로 전환.
                 </div>
                 <div class="law-item">
-                    <strong>4) 골프장 경기 운영 관점의 이점은?</strong><br>
-                    기존 생활무전기의 고질적 문제인 산악 지형 통신 끊김, 인접 코스 채널 혼선, 도청 위험을 완전 해결하고 100% 음영 ZERO 환경을 제공합니다.
+                    <strong>4) 경기 운영 관점의 이점</strong><br>
+                    산악 지형 통신 끊김, 인접 코스 혼선, 도청 위험을 완전 해결하고 100% 음영 ZERO 환경 제공.
                 </div>
             </div>
         </div>
 
         <div class="main-title">4. 도입 시 독점적 기대 효과</div>
         <ul class="effects">
-            <li><strong>음영지역 ZERO 통신망:</strong> KT LTE 전국 백본망을 사용하여 산악 지형, 그늘집, 지하에서도 통신 단절 없음.</li>
-            <li><strong>골프장 특화 하드웨어:</strong> 카트 주행 소음을 상쇄하는 1.5W 스피커 탑재 및 고압 세차 환경을 견디는 IP69 방수방진.</li>
-            <li><strong>완벽한 보안 및 안전:</strong> AES-256 비화 암호화 기술로 내부 유출 방지 및 경기원 보호용 SOS 긴급 알람 기본 제공.</li>
+            <li><strong>음영지역 ZERO:</strong> KT LTE 전국망으로 산악 지형, 그늘집, 지하에서도 통신 단절 없음.</li>
+            <li><strong>골프장 특화 규격:</strong> 카트 주행 소음을 상쇄하는 1.5W 스피커 및 IP69 방수방진.</li>
+            <li><strong>완벽한 보안/안전:</strong> AES-256 비화 암호화 및 경기원 보호용 SOS 긴급 알람 기본 제공.</li>
         </ul>
 
         <div class="footer-sign">
@@ -557,7 +579,6 @@
 
 </div>
 
-<!-- 컨트롤 패널 -->
 <div class="control-panel">
     <a href="tel:010-8290-9971" id="btn-call" class="btn-call">📞 담당자 전화 연결 (김영훈 과장)</a>
     <button id="btn-spec">🔍 상세 스펙 확인하기</button>
@@ -565,9 +586,8 @@
     <button id="btn-pdf">📄 PDF로 저장</button>
     <button id="btn-reset">🔄 수량/조건 초기화</button>
 </div>
-<div class="hint">단가, 요금, 수량을 직접 입력 및 변경하면 할인액/할인율과 최종 공급가액이 실시간으로 재계산됩니다.</div>
+<div class="hint">단가, 요금, 수량을 직접 변경하면 공급가액과 할인율이 실시간으로 재계산됩니다.</div>
 
-<!-- 상세 스펙 확인 모달 (전달해주신 영구 이미지 주소 적용) -->
 <div id="specModal" class="modal-overlay">
     <div class="modal-window">
         <div class="modal-header">
@@ -581,7 +601,6 @@
 </div>
 
 <script>
-  /* 1. 보안 스크립트 */
   document.addEventListener('contextmenu', (e) => e.preventDefault());
 
   document.addEventListener('keydown', (e) => {
@@ -610,7 +629,6 @@
     document.body.classList.remove('blur-protected');
   });
 
-  /* 2. 견적서 자동 계산 */
   const fmt = (n) => Math.round(n).toLocaleString('ko-KR');
   const toRaw = (str) => (str || '').toString().replace(/[^0-9]/g, '');
   const toFormatted = (raw) => raw ? parseInt(raw, 10).toLocaleString('ko-KR') : '0';
@@ -639,11 +657,11 @@
     quoteDate: '2026-07-01',
     managerInfo: '김영훈 과장 010-8290-9971',
     deviceName: '모토로라 솔루션 RG170 (WAVE PTX)',
-    deviceSpec: '모토로라 RG170 <br>(IP69 방수, 1.5W 고출력)',
+    deviceSpec: '모토로라 RG170<br>(IP69, 1.5W)',
     normalPrice: '297,000',
     promoPrice: '0',
     qty: 60,
-    planName: '기업전용 라이트(9,900원)<br>+ PTX 부가서비스(5,500원)',
+    planName: '기업전용 라이트(9,900원)<br>+ PTX 부가(5,500원)',
     normalMonthly: '15,400',
     discountMonthly: '2,475',
   };
@@ -682,7 +700,7 @@
     els.promoDiscountRate.textContent = `${rate}%↓`;
     els.promoDiffLabel.textContent = `할인: -${fmt(unitDiscount)}원`;
     els.totalDiscountLabel.textContent = `총 할인: -${fmt(capexSaving)}원`;
-    els.planDiscountRate.textContent = `(약 ${planRate}% 할인)`;
+    els.planDiscountRate.textContent = `(약 ${planRate}%↓)`;
   }
 
   moneyInputs.forEach(inp => {
@@ -718,7 +736,6 @@
   }
   document.getElementById('btn-reset').addEventListener('click', resetAll);
 
-  /* 3. 모달 제어 */
   const specModal = document.getElementById('specModal');
   const btnSpec = document.getElementById('btn-spec');
   const btnCloseModal = document.getElementById('btnCloseModal');
@@ -737,7 +754,6 @@
     }
   });
 
-  /* 4. 이미지 / PDF 다운로드 */
   function captureCanvas() {
     moneyInputs.forEach(inp => { inp.value = toFormatted(toRaw(inp.value)); });
     return html2canvas(document.getElementById('quotation'), {
