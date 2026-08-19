@@ -6,7 +6,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-  * { box-sizing: border-box; }
+  * { 
+    box-sizing: border-box; 
+    /* 텍스트 선택 및 드래그 방지 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
   body {
     font-family: 'Pretendard', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
     color: #333333;
@@ -17,14 +25,41 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /* 화면 캡처 시도(창 비활성화/포커스 아웃) 시 화면 블러 처리 */
+  body.blur-protected {
+    filter: blur(14px);
+    transition: filter 0.1s ease;
+  }
+
   /* A4 캔버스 (210mm x 297mm) */
   #quotation {
+    position: relative;
     width: 210mm;
     min-height: 297mm;
     margin: 0 auto;
     background: #ffffff;
     padding: 14mm 14mm;
     box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+    overflow: hidden;
+  }
+
+  /* 워터마크 배경 오버레이 (SVG 타일 패턴) */
+  .watermark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.11;
+    background-repeat: repeat;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='340' height='220'><text x='50%' y='50%' fill='%23000000' font-size='13' font-weight='bold' font-family='sans-serif' text-anchor='middle' transform='rotate(-28 170 110)'>KT 김영훈 무단사용 및 배포를 금지합니다</text></svg>");
+  }
+
+  .quotation-content {
+    position: relative;
+    z-index: 2;
   }
 
   .quotation-header {
@@ -38,13 +73,20 @@
     font-size: 21pt;
     margin: 0 0 6px 0;
     letter-spacing: -0.5px;
+    text-align: center;
   }
-  .quotation-header p { margin: 0; color: #555555; font-size: 10pt; font-weight: 500; }
+  .quotation-header p { margin: 0; color: #555555; font-size: 10pt; font-weight: 500; text-align: center; }
 
   .info-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
-  .info-table td { border: 1px solid #cccccc; padding: 7px 8px; font-size: 9.3pt; vertical-align: middle; }
+  .info-table td { 
+    border: 1px solid #cccccc; 
+    padding: 7px 8px; 
+    font-size: 9.3pt; 
+    vertical-align: middle; 
+    text-align: center; 
+  }
   .info-table td.label { background-color: #f4f7fa; font-weight: 700; width: 15%; text-align: center; color: #222; }
-  .info-table td.manager-cell strong { display: block; margin-bottom: 2px; }
+  .info-table td.manager-cell strong { display: block; margin-bottom: 2px; text-align: center; }
 
   .main-title {
     font-size: 11.5pt;
@@ -62,14 +104,14 @@
   .data-table th, .data-table td { 
     border: 1px solid #dddddd; 
     padding: 7px 5px; 
-    text-align: center; 
+    text-align: center !important; 
+    vertical-align: middle;
     font-size: 8.8pt; 
     white-space: normal; 
     overflow: visible; 
   }
-  .data-table th { background-color: #e6f0fa; color: #111111; font-weight: 700; font-size: 8.9pt; }
+  .data-table th { background-color: #e6f0fa; color: #111111; font-weight: 700; font-size: 8.9pt; text-align: center; }
   
-  .text-right { text-align: right !important; }
   .highlight-text { color: #d9534f; font-weight: bold; }
   .total-row { background-color: #f0f7ff; font-weight: bold; }
   
@@ -88,10 +130,11 @@
     text-align: center;
     outline: none;
     background: transparent;
+    -webkit-user-select: text;
+    user-select: text;
   }
   .item-edit:focus { background: #fffbe0; }
 
-  /* 할인 및 프로모션 서브 텍스트 태그 */
   .sub-discount {
     display: block;
     font-size: 7.6pt;
@@ -99,6 +142,7 @@
     font-weight: 600;
     margin-top: 2px;
     line-height: 1.15;
+    text-align: center;
   }
 
   .badge-rate {
@@ -122,9 +166,10 @@
     margin-top: 14px;
     margin-bottom: 16px;
     line-height: 1.45;
+    text-align: center;
   }
 
-  ul.effects { padding-left: 18px; font-size: 9pt; margin-bottom: 16px; }
+  ul.effects { padding-left: 18px; font-size: 9pt; margin-bottom: 16px; text-align: left; }
   ul.effects li { margin-bottom: 4px; }
 
   .footer-sign {
@@ -143,33 +188,38 @@
     font-family: inherit;
     font-size: inherit;
     color: inherit;
-    text-align: inherit;
+    text-align: center;
     font-weight: inherit;
     padding: 0;
+    -webkit-user-select: text;
+    user-select: text;
   }
   input.edit:focus, div.edit:focus {
     outline: none;
     background: #fffbe0;
   }
   input.qty-input { text-align: center; font-weight: bold; width: 45px; }
-  input.money-input { text-align: right; }
+  input.money-input { text-align: center; }
   input.date-input {
     text-align: center;
     cursor: pointer;
     font-weight: bold;
     color: #0054a6;
   }
-  .amount-cell { white-space: nowrap; padding-right: 6px !important; }
+  .amount-cell { 
+    white-space: nowrap; 
+    text-align: center !important; 
+  }
   .amount-cell input { display: inline-block; }
   
   .discount-inline {
     display: inline-flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     width: 100%;
     gap: 2px;
   }
-  .discount-inline input { width: 48px; text-align: right; }
+  .discount-inline input { width: 50px; text-align: center; }
 
   /* 컨트롤 패널 */
   .control-panel {
@@ -179,6 +229,8 @@
     justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 10;
   }
   .control-panel button, .control-panel a.btn-call {
     padding: 11px 18px;
@@ -240,127 +292,131 @@
   }
 </style>
 </head>
-<body>
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
 <div id="quotation">
+    <!-- 보안 워터마크 -->
+    <div class="watermark-overlay"></div>
 
-    <div class="quotation-header">
-        <h1>모토로라 RG170 도입견적</h1>
-        <p>KT M&S 기업무선 PTX 스마트 통신망 전환 제안</p>
-    </div>
+    <div class="quotation-content">
+        <div class="quotation-header">
+            <h1>모토로라 RG170 도입견적</h1>
+            <p>KT M&S 기업무선 PTX 스마트 통신망 전환 제안</p>
+        </div>
 
-    <table class="info-table">
-        <tr>
-            <td class="label">공급 명칭</td>
-            <td>
-                <div class="edit" id="supplyName" contenteditable="true" style="text-align: center; outline: none; line-height: 1.4;">골프장 경기 운영 혁신을 위한<br>VoLTE 무전기 도입</div>
-            </td>
-            <td class="label">견적 일자</td>
-            <td><input class="edit date-input" type="date" id="quoteDate" value="2026-07-01"></td>
-        </tr>
-        <tr>
-            <td class="label">제안 주관</td>
-            <td class="manager-cell">
-                <strong>KT M&S 동부법인지사</strong>
-                <input class="edit" id="managerInfo" value="김영훈 과장 010-8290-9971">
-            </td>
-            <td class="label">제안 단말</td>
-            <td><input class="edit" id="deviceName" value="모토로라 솔루션 RG170 (WAVE PTX)"></td>
-        </tr>
-    </table>
-
-    <div class="legal-notice">
-        <strong>⚠️ 법적 행정 처분 불이행 리스크 안내 (과기부 정책 고지)</strong><br>
-        과학기술정보통신부 정책에 의거하여 현재 귀 사에서 운용 중인 400MHz 아날로그 생활무전기는 <br><strong>2026년 12월 31일부로 대한민국 전역에서 전면 종료(사용 불법화)</strong>됩니다. <br>본 견적은 필수적 무전망 디지털 전환에 따른 자본 지출(CAPEX)을 zero화하기 위한 KT M&S 단독 프로모션 단가입니다.
-    </div>
-
-    <div class="main-title">1. 초기 도입 비용 (CAPEX)</div>
-    <table class="data-table">
-        <colgroup>
-            <col style="width:23%;"><col style="width:17%;"><col style="width:24%;"><col style="width:9%;"><col style="width:27%;">
-        </colgroup>
-        <thead>
+        <table class="info-table">
             <tr>
-                <th>품명 및 규격</th>
-                <th>정상 가격</th>
-                <th>프로모션 단가 (할인율)</th>
-                <th>수량</th>
-                <th>최종 공급 가액</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="item-cell"><div class="item-edit" id="deviceSpec" contenteditable="true">모토로라 RG170 <br>(IP69 방수, 1.5W 고출력)</div></td>
-                <td class="text-right amount-cell">
-                    <input class="edit money-input" type="text" inputmode="numeric" id="normalPrice" value="297,000" style="width: 55px;">원
-                </td>
-                <td class="text-right amount-cell highlight-text">
-                    <div>
-                        <input class="edit money-input highlight-text" type="text" inputmode="numeric" id="promoPrice" value="0" style="width: 40px;">원
-                        <span class="badge-rate" id="promoDiscountRate">100%↓</span>
-                    </div>
-                    <span class="sub-discount" id="promoDiffLabel">할인: -297,000원</span>
-                </td>
+                <td class="label">공급 명칭</td>
                 <td>
-                    <input class="edit qty-input" type="number" id="qty" min="1" value="60">
+                    <div class="edit" id="supplyName" contenteditable="true" style="text-align: center; outline: none; line-height: 1.4;">골프장 경기 운영 혁신을 위한<br>VoLTE 무전기 도입</div>
                 </td>
-                <td class="text-right amount-cell" style="font-weight: bold;">
-                    <div><span id="supplyAmount">0</span>원</div>
-                    <span class="sub-discount" id="totalDiscountLabel">총 할인: -17,820,000원</span>
-                </td>
+                <td class="label">견적 일자</td>
+                <td><input class="edit date-input" type="date" id="quoteDate" value="2026-07-01"></td>
             </tr>
-            <tr class="total-row">
-                <td colspan="4">초기 투자비용 합계 (단말기 대금 전액 지원 혜택)</td>
-                <td class="text-right highlight-text">총 <span id="capexSaving">0</span>원 절감</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="main-title">2. 월 운영 비용 (OPEX - 3년 약정 기준)</div>
-    <table class="data-table">
-        <colgroup>
-            <col style="width:24%;"><col style="width:16%;"><col style="width:18%;"><col style="width:21%;"><col style="width:21%;">
-        </colgroup>
-        <thead>
             <tr>
-                <th>요금 항목 구성</th>
-                <th>정상 월정액</th>
-                <th>선택약정 할인액</th>
-                <th>대당 월 청구액(VAT포함)</th>
-                <th>전체 기준 총 월정액</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="item-cell"><div class="item-edit" id="planName" contenteditable="true">기업전용 라이트(9,900원)<br>+ PTX 부가서비스(5,500원)</div></td>
-                <td class="text-right amount-cell">
-                    <input class="edit money-input" type="text" inputmode="numeric" id="normalMonthly" value="15,400" style="width: 48px;">원
+                <td class="label">제안 주관</td>
+                <td class="manager-cell">
+                    <strong>KT M&S 동부법인지사</strong>
+                    <input class="edit" id="managerInfo" value="김영훈 과장 010-8290-9971">
                 </td>
-                <td class="amount-cell">
-                    <div class="discount-inline">
-                        -<input class="edit money-input" type="text" inputmode="numeric" id="discountMonthly" value="2,475">원
-                    </div>
-                    <span class="sub-discount text-right" id="planDiscountRate">(약 16.1% 할인)</span>
-                </td>
-                <td class="text-right amount-cell highlight-text"><span id="perUnitMonthly">0</span>원</td>
-                <td class="text-right amount-cell" style="font-weight: bold;"><span id="totalMonthly">0</span>원</td>
+                <td class="label">제안 단말</td>
+                <td><input class="edit" id="deviceName" value="모토로라 솔루션 RG170 (WAVE PTX)"></td>
             </tr>
-            <tr class="total-row">
-                <td colspan="3">연간 총 운영 비용 (타사 PTT 대비 운영비 절감 적용)</td>
-                <td colspan="2" class="text-right" style="color: #0054a6; font-size: 9.3pt;"><span id="annualTotal">0</span>원 / 년</td>
-            </tr>
-        </tbody>
-    </table>
+        </table>
 
-    <div class="main-title">3. 도입 시 독점적 기대 효과</div>
-    <ul class="effects">
-        <li><strong>음영지역 ZERO 통신망:</strong> KT LTE 전국 백본망을 사용하여 산악 지형, 그늘집, 지하에서도 통신 단절 없음.</li>
-        <li><strong>골프장 특화 하드웨어:</strong> 카트 주행 소음을 상쇄하는 1.5W 스피커 탑재 및 고압 세차 환경을 견디는 IP69 방수방진.</li>
-        <li><strong>완벽한 보안 및 안전:</strong> AES-256 비화 암호화 기술로 내부 유출 방지 및 경기원 보호용 SOS 긴급 알람 기본 제공.</li>
-    </ul>
+        <div class="legal-notice">
+            <strong>⚠️ 법적 행정 처분 불이행 리스크 안내 (과기부 정책 고지)</strong><br>
+            과학기술정보통신부 정책에 의거하여 현재 귀 사에서 운용 중인 400MHz 아날로그 생활무전기는 <br><strong>2026년 12월 31일부로 대한민국 전역에서 전면 종료(사용 불법화)</strong>됩니다. <br>본 견적은 필수적 무전망 디지털 전환에 따른 자본 지출(CAPEX)을 zero화하기 위한 KT M&S 단독 프로모션 단가입니다.
+        </div>
 
-    <div class="footer-sign">
-        KT M&S 동부법인지사 대표이사 (직인생략)
+        <div class="main-title">1. 초기 도입 비용 (CAPEX)</div>
+        <table class="data-table">
+            <colgroup>
+                <col style="width:23%;"><col style="width:17%;"><col style="width:24%;"><col style="width:9%;"><col style="width:27%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>품명 및 규격</th>
+                    <th>정상 가격</th>
+                    <th>프로모션 단가 (할인율)</th>
+                    <th>수량</th>
+                    <th>최종 공급 가액</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="item-cell"><div class="item-edit" id="deviceSpec" contenteditable="true">모토로라 RG170 <br>(IP69 방수, 1.5W 고출력)</div></td>
+                    <td class="amount-cell">
+                        <input class="edit money-input" type="text" inputmode="numeric" id="normalPrice" value="297,000" style="width: 58px;">원
+                    </td>
+                    <td class="amount-cell highlight-text">
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <input class="edit money-input highlight-text" type="text" inputmode="numeric" id="promoPrice" value="0" style="width: 25px;">원
+                            <span class="badge-rate" id="promoDiscountRate">100%↓</span>
+                        </div>
+                        <span class="sub-discount" id="promoDiffLabel">할인: -297,000원</span>
+                    </td>
+                    <td>
+                        <input class="edit qty-input" type="number" id="qty" min="1" value="60">
+                    </td>
+                    <td class="amount-cell" style="font-weight: bold;">
+                        <div><span id="supplyAmount">0</span>원</div>
+                        <span class="sub-discount" id="totalDiscountLabel">총 할인: -17,820,000원</span>
+                    </td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="4">초기 투자비용 합계 (단말기 대금 전액 지원 혜택)</td>
+                    <td class="highlight-text" style="text-align: center;">총 <span id="capexSaving">0</span>원 절감</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="main-title">2. 월 운영 비용 (OPEX - 3년 약정 기준)</div>
+        <table class="data-table">
+            <colgroup>
+                <col style="width:24%;"><col style="width:16%;"><col style="width:18%;"><col style="width:21%;"><col style="width:21%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>요금 항목 구성</th>
+                    <th>정상 월정액</th>
+                    <th>선택약정 할인액</th>
+                    <th>대당 월 청구액(VAT포함)</th>
+                    <th>전체 기준 총 월정액</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="item-cell"><div class="item-edit" id="planName" contenteditable="true">기업전용 라이트(9,900원)<br>+ PTX 부가서비스(5,500원)</div></td>
+                    <td class="amount-cell">
+                        <input class="edit money-input" type="text" inputmode="numeric" id="normalMonthly" value="15,400" style="width: 50px;">원
+                    </td>
+                    <td class="amount-cell">
+                        <div class="discount-inline">
+                            -<input class="edit money-input" type="text" inputmode="numeric" id="discountMonthly" value="2,475">원
+                        </div>
+                        <span class="sub-discount" id="planDiscountRate">(약 16.1% 할인)</span>
+                    </td>
+                    <td class="amount-cell highlight-text"><span id="perUnitMonthly">0</span>원</td>
+                    <td class="amount-cell" style="font-weight: bold;"><span id="totalMonthly">0</span>원</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="3">연간 총 운영 비용 (타사 PTT 대비 운영비 절감 적용)</td>
+                    <td colspan="2" style="color: #0054a6; font-size: 9.3pt; text-align: center;"><span id="annualTotal">0</span>원 / 년</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="main-title">3. 도입 시 독점적 기대 효과</div>
+        <ul class="effects">
+            <li><strong>음영지역 ZERO 통신망:</strong> KT LTE 전국 백본망을 사용하여 산악 지형, 그늘집, 지하에서도 통신 단절 없음.</li>
+            <li><strong>골프장 특화 하드웨어:</strong> 카트 주행 소음을 상쇄하는 1.5W 스피커 탑재 및 고압 세차 환경을 견디는 IP69 방수방진.</li>
+            <li><strong>완벽한 보안 및 안전:</strong> AES-256 비화 암호화 기술로 내부 유출 방지 및 경기원 보호용 SOS 긴급 알람 기본 제공.</li>
+        </ul>
+
+        <div class="footer-sign">
+            KT M&S 동부법인지사 대표이사 (직인생략)
+        </div>
     </div>
 
 </div>
@@ -374,6 +430,44 @@
 <div class="hint">단가, 요금, 수량을 직접 입력 및 변경하면 할인액/할인율과 최종 공급가액이 실시간으로 재계산됩니다.</div>
 
 <script>
+  /* ================== 1. 문서 보안 스크립트 ================== */
+  
+  // 우클릭 방지
+  document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  // F12, 개발자도구 단축키, 복사/인쇄 단축키 차단
+  document.addEventListener('keydown', (e) => {
+    // F12 차단
+    if (e.key === 'F12' || e.keyCode === 123) {
+      e.preventDefault();
+      return false;
+    }
+    // Ctrl+Shift+I / J / C (개발자도구), Ctrl+U (소스보기)
+    if (e.ctrlKey && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (e.ctrlKey && ['u', 'U', 's', 'S', 'p', 'P'].includes(e.key)) {
+      e.preventDefault();
+      return false;
+    }
+    // PrintScreen 키 입력 감지 시 클립보드 무효화
+    if (e.key === 'PrintScreen' || e.keyCode === 44) {
+      navigator.clipboard.writeText('');
+      alert('보안 정책에 따라 화면 캡처가 제한됩니다.');
+    }
+  });
+
+  // 화면 캡처 시도 방지 (포커스 아웃 시 블러 처리)
+  window.addEventListener('blur', () => {
+    document.body.classList.add('blur-protected');
+  });
+  window.addEventListener('focus', () => {
+    document.body.classList.remove('blur-protected');
+  });
+
+
+  /* ================== 2. 견적서 계산 로직 ================== */
   const fmt = (n) => Math.round(n).toLocaleString('ko-KR');
   const toRaw = (str) => (str || '').toString().replace(/[^0-9]/g, '');
   const toFormatted = (raw) => raw ? parseInt(raw, 10).toLocaleString('ko-KR') : '0';
@@ -418,18 +512,15 @@
     const normalMonthly = parseFloat(toRaw(els.normalMonthly.value)) || 0;
     const discountMonthly = parseFloat(toRaw(els.discountMonthly.value)) || 0;
 
-    // CAPEX 계산
     const unitDiscount = Math.max(normalPrice - promoPrice, 0);
     const supplyAmount = promoPrice * qty;
     const capexSaving = unitDiscount * qty;
     
-    // 할인율 계산
     let rate = 0;
     if (normalPrice > 0) {
       rate = Math.round((unitDiscount / normalPrice) * 100);
     }
     
-    // 요금제 할인율 계산
     let planRate = 0;
     if (normalMonthly > 0) {
       planRate = ((discountMonthly / normalMonthly) * 100).toFixed(1);
@@ -439,14 +530,12 @@
     const totalMonthly = perUnitMonthly * qty;
     const annualTotal = totalMonthly * 12;
 
-    // 텍스트 반영
     els.supplyAmount.textContent = fmt(supplyAmount);
     els.capexSaving.textContent = fmt(capexSaving);
     els.perUnitMonthly.textContent = fmt(perUnitMonthly);
     els.totalMonthly.textContent = fmt(totalMonthly);
     els.annualTotal.textContent = fmt(annualTotal);
 
-    // 할인 태그 및 문구 반영
     els.promoDiscountRate.textContent = `${rate}%↓`;
     els.promoDiffLabel.textContent = `할인: -${fmt(unitDiscount)}원`;
     els.totalDiscountLabel.textContent = `총 할인: -${fmt(capexSaving)}원`;
@@ -503,6 +592,7 @@
           const computed = window.getComputedStyle(input);
           span.style.cssText = computed.cssText;
           span.style.display = 'inline-block';
+          span.style.textAlign = 'center';
           span.style.width = 'auto';
           input.parentNode.replaceChild(span, input);
         });
